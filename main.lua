@@ -1,7 +1,7 @@
 config = {}
 config.GAME_READY = 1
 config.GAME_STARTED = 2
-config.TIMER = 2
+config.TIMER = 10
 
 function distanceBetween(x1, y1, x2, y2)
   return math.sqrt((y2 - y1)^2 + (x2 - x1)^2)
@@ -20,8 +20,8 @@ function love.load()
   end
 
   score = 0
-  timer = CONFIG.TIMER
-  gameState = CONFIG.INITIAL_STATE
+  timer = config.TIMER
+  gameState = config.GAME_READY
 
   myFont = love.graphics.newFont(40)
 end
@@ -46,6 +46,10 @@ function love.draw()
 
   love.graphics.setFont(myFont)
   love.graphics.setColor(255/255, 255/255, 255/255, 1)
+
+  if gameState == config.GAME_READY then
+    love.graphics.printf('Click anywhere to start the game', 0, love.graphics.getHeight()/2, love.graphics.getWidth(), 'center')
+  end
   love.graphics.print('Score: ' .. score)
   love.graphics.print('Time: ' .. math.ceil(timer), 300, 0)
 end

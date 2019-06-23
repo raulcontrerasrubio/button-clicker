@@ -1,15 +1,23 @@
+function distanceBetween(x1, y1, x2, y2)
+  return math.sqrt((y2 - y1)^2 + (x2 - x1)^2)
+end
+
 function love.load()
   button = {}
   button.x = 200
   button.y = 200
   button.size = 50
-  button.isInside = function (x, y) return math.sqrt((button.y - y)^2 + (button.x - x)^2) <= button.size end
+  button.isInside = function (x, y) return distanceBetween(button.x, button.y, x, y) <= button.size end
+  button.jump = function ()
+    button.size = math.random(25, 60)
+    button.x = math.random(button.size, love.graphics.getWidth() - button.size)
+    button.y = math.random(button.size, love.graphics.getHeight() - button.size)
+  end
 
   score = 0
   timer = 0
 
   myFont = love.graphics.newFont(40)
-
 end
 
 function love.update(dt)
@@ -22,11 +30,12 @@ function love.draw()
 
   love.graphics.setFont(myFont)
   love.graphics.setColor(255/255, 255/255, 255/255, 1)
-  love.graphics.print('Score:' .. score)
+  love.graphics.print('Score: ' .. score)
 end
 
 function love.mousepressed(x, y, b)
-  if b == 1 and button.isInside(x, y) then
+  if b == 1 and button.isInside(love.mouse.getX(), love.mouse.getY()) then
       score = score + 1
+      button.jump()
   end
 end
